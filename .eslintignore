@@ -1,0 +1,4 @@
+hardhat.config.ts
+node_modules
+typechain-types
+*.js
