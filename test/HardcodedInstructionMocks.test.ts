@@ -2,26 +2,26 @@ import hre, { ethers } from 'hardhat';
 import { expect, use } from 'chai';
 import chaiBytes from 'chai-bytes';
 import {
-  DlnClaimUnlockExample,
-  DlnClaimUnlockExample1,
-  DlnClaimUnlockExample1__factory,
-  DlnClaimUnlockExample2,
-  DlnClaimUnlockExample2__factory,
-  DlnClaimUnlockExample__factory,
+  HardcodedInstruction0Mock,
+  HardcodedInstruction0Mock__factory,
+  HardcodedInstruction1Mock,
+  HardcodedInstruction1Mock__factory,
+  HardcodedInstruction2Mock,
+  HardcodedInstruction2Mock__factory,
 } from '../typechain-types';
 
 use(chaiBytes);
 
 describe('Use case: DlnClaimUnlockExample', () => {
-  let deployment: DlnClaimUnlockExample;
-  let deployment1: DlnClaimUnlockExample1;
-  let deployment2: DlnClaimUnlockExample2;
+  let deployment: HardcodedInstruction0Mock;
+  let deployment1: HardcodedInstruction1Mock;
+  let deployment2: HardcodedInstruction2Mock;
 
   beforeEach(async () => {
     const [signer] = await hre.ethers.getSigners();
-    deployment = await new DlnClaimUnlockExample__factory(signer).deploy();
-    deployment1 = await new DlnClaimUnlockExample1__factory(signer).deploy();
-    deployment2 = await new DlnClaimUnlockExample2__factory(signer).deploy();
+    deployment = await new HardcodedInstruction0Mock__factory(signer).deploy();
+    deployment1 = await new HardcodedInstruction1Mock__factory(signer).deploy();
+    deployment2 = await new HardcodedInstruction2Mock__factory(signer).deploy();
   });
 
   it('Should serialize ExternalInstruction on-chain', async () => {

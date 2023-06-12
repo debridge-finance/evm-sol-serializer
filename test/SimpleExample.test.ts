@@ -5,12 +5,14 @@ import { SimpleExample, SimpleExample__factory } from '../typechain-types';
 
 use(chaiBytes);
 
-describe('ExternalInstruction use case', () => {
+describe('Use case: simple dummy example', () => {
   let deployment: SimpleExample;
+
   beforeEach(async () => {
     const [signer] = await hre.ethers.getSigners();
     deployment = await new SimpleExample__factory(signer).deploy();
   });
+
   it('Should serialize ExternalInstruction on-chain', async () => {
     const result = await deployment.serializeNativeExternalInstruction();
     const master = new Uint8Array([

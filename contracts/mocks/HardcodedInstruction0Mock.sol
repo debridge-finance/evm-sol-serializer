@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "../library/DeBridgeSolana.sol";
 
-contract DlnClaimUnlockExample {
+contract HardcodedInstruction0Mock {
     using DeBridgeSolanaSerializer for DeBridgeSolana.ExternalInstruction;
 
     // ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL

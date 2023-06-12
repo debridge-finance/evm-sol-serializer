@@ -8,4 +8,12 @@ module.exports = {
     "parserOptions": {
       "project": "tsconfig.eslint.json"
     },
+    "overrides": [
+      {
+        "files": ["scripts/*.ts"],
+        "rules": {
+          "no-console": 0
+        }
+      }
+    ]
   };
