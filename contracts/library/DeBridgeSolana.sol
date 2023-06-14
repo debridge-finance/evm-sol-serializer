@@ -239,27 +239,31 @@ library DeBridgeSolanaSerializer {
 
 library LittleEndianSerializer {
 
-    function uint64ToLittleEndian(uint64 x) internal pure returns (bytes memory) {
-        return toLittleEndian(x, 8);
+    function uint64ToLittleEndian(uint64 v) internal pure returns (bytes memory r) {
+        return _uint64ToLittleEndian(v);
     }
 
-    function uint32ToLittleEndian(uint32 x) internal pure returns (bytes memory) {
-        return toLittleEndian(x, 4);
+    function uint32ToLittleEndian(uint32 v) internal pure returns (bytes memory r) {
+        return _uint32ToLittleEndian(v);
     }
 
-    function toLittleEndian(uint256 x, uint8 length) internal pure returns (bytes memory) {
-        bytes memory b = new bytes(length);
-        for (uint i = 0; i < length; i++) {
-            b[i] = bytes1(uint8(x / (2**(8*((length - 1) - i)))));
+    function _uint64ToLittleEndian(uint64 x) internal pure returns (bytes memory) {
+        uint64 temp;
+        assembly {
+            for { let i := 0 } lt(i, 8) { i := add(i, 1) } {
+                temp := or(shl(8, temp), and(shr(mul(i, 8), x), 0xFF))
+            }
         }
-        return reverseBytes(b);
+        return abi.encodePacked(temp);
     }
 
-    function reverseBytes(bytes memory b) private pure returns (bytes memory) {
-        bytes memory reversed = new bytes(b.length);
-        for(uint i = 0; i < b.length; i++) {
-            reversed[i] = b[b.length - 1 - i];
+    function _uint32ToLittleEndian(uint32 x) internal pure returns (bytes memory) {
+        uint32 temp;
+        assembly {
+            for { let i := 0 } lt(i, 4) { i := add(i, 1) } {
+                temp := or(shl(8, temp), and(shr(mul(i, 8), x), 0xFF))
+            }
         }
-        return reversed;
+        return abi.encodePacked(temp);
     }
 }
