@@ -42,16 +42,15 @@ library DeBridgeSolanaDataSubstitutions {
         uint64 account_index;
         uint64 offset;
         bool is_big_endian;
-        /// Subtraction from token account balane before replace
         uint64 subtraction;
     }
 
     function serialize(SubmissionAuthWalletAmount memory submissionAuthWalletAmount) internal pure returns (bytes memory data) {
-        data = bytes.concat(
+        data = abi.encodePacked(
             hex"00000000",
             submissionAuthWalletAmount.account_index.uint64ToLittleEndian(),
             submissionAuthWalletAmount.offset.uint64ToLittleEndian(),
-            submissionAuthWalletAmount.is_big_endian == true ? bytes1(uint8(1)) : bytes1(0),
+            submissionAuthWalletAmount.is_big_endian,
             submissionAuthWalletAmount.subtraction.uint64ToLittleEndian()
         );
     }
@@ -75,39 +74,33 @@ library DeBridgeSolanaPubkeySubstitutions {
     }
 
     function serialize(SubmissionAuthWallet memory submissionAuthWallet) internal pure returns (bytes memory data) {
-        data = bytes.concat(
+        data = abi.encodePacked(
             hex"00000000",
             submissionAuthWallet.token_mint);
     }
 
     function serialize(BySeeds memory bySeeds) internal pure returns (bytes memory data) {
-        data = bytes.concat(
+        data = abi.encodePacked(
             hex"01000000",
             bySeeds.program_id,
-            serialize(bySeeds.seeds)
+            serialize(bySeeds.seeds),
+            bySeeds.bump == 0 ? abi.encodePacked(hex"00") : abi.encodePacked(hex"01", bySeeds.bump)
         );
-
-        if (bySeeds.bump == 0) {
-            data = bytes.concat(data, bytes1(0));
-        }
-        else {
-            data = bytes.concat(data, bytes1(uint8(1)), bytes1(bySeeds.bump));
-        }
     }
 
     function serialize(Seed[] memory seeds) internal pure returns (bytes memory data) {
-        require(seeds.length <= (2**64 - 1), "U64");
+        // require(seeds.length <= (2**64 - 1), "U64");
 
-        data = uint64(seeds.length).uint64ToLittleEndian();
+        data = abi.encodePacked(uint64(seeds.length).uint64ToLittleEndian());
         for (uint i = 0; i < seeds.length; i++) {
-            data = bytes.concat(data, seeds[i].data);
+            data = abi.encodePacked(data, seeds[i].data);
         }
     }
 
     function getArbitrarySeed(bytes memory vec) internal pure returns (DeBridgeSolanaPubkeySubstitutions.Seed memory) {
         // require(vec.length <= (2**64 - 1), "U64");
 
-        bytes memory data = bytes.concat(
+        bytes memory data = abi.encodePacked(
             hex"00000000",
             uint64(vec.length).uint64ToLittleEndian(),
             vec
@@ -129,47 +122,20 @@ library DeBridgeSolanaSerializer {
     using LittleEndianSerializer for uint32;
 
     function serialize(DeBridgeSolana.ExternalInstruction memory ei) internal pure returns (bytes memory data) {
-        //
-        // reward: Amount
-        //
-        data = ei.reward.uint64ToLittleEndian();
-
-        //
-        // expense: Option<Amount>
-        //
-        if (ei.expense == 0) {
-            data = bytes.concat(data, hex"00");
-        }
-        else {
-            data = bytes.concat(data, hex"01", ei.expense.uint64ToLittleEndian());
-        }
-
-        //
-        // execute_policy: ExecutePolicy
-        //
-        // Enum represent uint16, so we safely convert it to uint32 for simplicity of the code
-        data = bytes.concat(data, uint32(ei.execute_policy).uint32ToLittleEndian());
-
-        //
-        // pubkey_substitutions: Option<Vec<(u64, PubkeySubstitution)>>
-        //
-        data = bytes.concat(data, serialize(ei.pubkey_substitutions));
-
-        //
-        // data_substitutions: Option<Vec<DataSubstitution>>
-        //
-        data = bytes.concat(data, serialize(ei.data_substitutions));
-
-        //
-        // instruction: Instruction
-        //
-        data = bytes.concat(data, serialize(ei.instruction));
+        data = abi.encodePacked(
+            ei.reward.uint64ToLittleEndian(),
+            ei.expense == 0 ? abi.encodePacked(hex"00") : abi.encodePacked(hex"01", ei.expense.uint64ToLittleEndian()),
+            uint32(ei.execute_policy).uint32ToLittleEndian(),
+            serialize(ei.pubkey_substitutions),
+            serialize(ei.data_substitutions),
+            serialize(ei.instruction)
+        );
     }
 
     function serialize(bytes memory vec) internal pure returns (bytes memory data) {
-        require(vec.length <= (2**64 - 1), "U64");
+        // require(vec.length <= (2**64 - 1), "U64");
 
-        data = bytes.concat(uint64(vec.length).uint64ToLittleEndian(), vec);
+        data = abi.encodePacked(uint64(vec.length).uint64ToLittleEndian(), vec);
     }
 
     function serialize(DeBridgeSolana.PubkeySubstitutionTuple[] memory pss) internal pure returns (bytes memory data) {
@@ -177,16 +143,22 @@ library DeBridgeSolanaSerializer {
             data = hex"00";
         }
         else {
-            // TODO: supply positive test case
-            require(pss.length <= (2**64 - 1), "U64");
+            // require(pss.length <= (2**64 - 1), "U64");
 
-            data = bytes.concat(
+            data = abi.encodePacked(
                 hex"01",
-                uint64(pss.length).uint64ToLittleEndian()
+                uint64(pss.length).uint64ToLittleEndian(),
+
+                // optimization!
+                // inlining first element here saves 500 gas
+                pss[0].u64.uint64ToLittleEndian(),
+                pss[0].data
             );
 
-            for (uint i = 0; i < pss.length; i++) {
-                data = bytes.concat(data, pss[i].u64.uint64ToLittleEndian(), pss[i].data);
+            // beware! This loop starts at (1) rather than (0) because the first (zeroed) element
+            // is being inlined onto previous abi.encodePacked() call. This saves 500 gas
+            for (uint i = 1; i < pss.length; i++) {
+                data = abi.encodePacked(data, pss[i].u64.uint64ToLittleEndian(), pss[i].data);
             }
         }
     }
@@ -196,42 +168,58 @@ library DeBridgeSolanaSerializer {
             data = hex"00";
         }
         else {
-            // TODO: supply positive test case
-            require(dss.length <= (2**64 - 1), "U64");
+            // require(dss.length <= (2**64 - 1), "U64");
 
-            data = bytes.concat(
+            data = abi.encodePacked(
                 hex"01",
                 uint64(dss.length).uint64ToLittleEndian()
             );
 
             for (uint i = 0; i < dss.length; i++) {
-                data = bytes.concat(data, dss[i].data);
+                data = abi.encodePacked(data, dss[i].data);
             }
         }
     }
 
     function serialize(DeBridgeSolana.Instruction memory i) internal pure returns (bytes memory data) {
-        data = bytes.concat(
+        data = abi.encodePacked(
             i.program_id,
+
+            // inlining vector length here (rather than in
+            // the underlying `serialize(DeBridgeSolana.AccountMeta[] memory ams)`) saves 500 gas
+            uint64(i.accounts.length).uint64ToLittleEndian(),
             serialize(i.accounts),
+
             serialize(i.data)
         );
     }
 
+    /// @dev This method is used for test case. Actual code is being inlined
+    ///      onto `serialize(DeBridgeSolana.AccountMeta[] memory ams)`
     function serialize(DeBridgeSolana.AccountMeta memory am) internal pure returns (bytes memory data) {
-        data = bytes.concat(
+        data = abi.encodePacked(
             am.pubkey,
-            am.is_signer ? bytes1(0x01) : bytes1(0x00),
-            am.is_writable ? bytes1(0x01) : bytes1(0x00)
+            am.is_signer,
+            am.is_writable
         );
     }
 
     function serialize(DeBridgeSolana.AccountMeta[] memory ams) internal pure returns (bytes memory data) {
-        require(ams.length <= (2**64 - 1), "U64");
+        // require(ams.length <= (2**64 - 1), "U64");
 
-        data = uint64(ams.length).uint64ToLittleEndian();
+        // inlining vector length on an higher level saves 500 gas {{{
+        // data = abi.encodePacked(uint64(ams.length).uint64ToLittleEndian());
+        // }}}
+
         for (uint i = 0; i < ams.length; i++) {
-            data = bytes.concat(data, serialize(ams[i]));
+            data = abi.encodePacked(
+                data,
+
+                // inline call of `serialize(DeBridgeSolana.AccountMeta memory)` for optimization
+                ams[i].pubkey,
+                ams[i].is_signer,
+                ams[i].is_writable
+            );
         }
     }
 }
@@ -239,31 +227,27 @@ library DeBridgeSolanaSerializer {
 
 library LittleEndianSerializer {
 
-    function uint64ToLittleEndian(uint64 v) internal pure returns (bytes memory r) {
+    function uint64ToLittleEndian(uint64 v) internal pure returns (uint64) {
         return _uint64ToLittleEndian(v);
     }
 
-    function uint32ToLittleEndian(uint32 v) internal pure returns (bytes memory r) {
+    function uint32ToLittleEndian(uint32 v) internal pure returns (uint32) {
         return _uint32ToLittleEndian(v);
     }
 
-    function _uint64ToLittleEndian(uint64 x) internal pure returns (bytes memory) {
-        uint64 temp;
+    function _uint64ToLittleEndian(uint64 x) internal pure returns (uint64 r) {
         assembly {
             for { let i := 0 } lt(i, 8) { i := add(i, 1) } {
-                temp := or(shl(8, temp), and(shr(mul(i, 8), x), 0xFF))
+                r := or(shl(8, r), and(shr(mul(i, 8), x), 0xFF))
             }
         }
-        return abi.encodePacked(temp);
     }
 
-    function _uint32ToLittleEndian(uint32 x) internal pure returns (bytes memory) {
-        uint32 temp;
+    function _uint32ToLittleEndian(uint32 x) internal pure returns (uint32 r) {
         assembly {
             for { let i := 0 } lt(i, 4) { i := add(i, 1) } {
-                temp := or(shl(8, temp), and(shr(mul(i, 8), x), 0xFF))
+                r := or(shl(8, r), and(shr(mul(i, 8), x), 0xFF))
             }
         }
-        return abi.encodePacked(temp);
     }
 }
