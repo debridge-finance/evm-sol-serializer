@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "../library/DeBridgeSolana.sol";
 
-contract SimpleExample {
+contract BasicExample {
     using DeBridgeSolanaSerializer for DeBridgeSolana.ExternalInstruction;
 
     function serializeNativeExternalInstruction() external pure returns (bytes memory) {

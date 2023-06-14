@@ -1,16 +1,16 @@
 import hre, { ethers } from 'hardhat';
 import { expect, use } from 'chai';
 import chaiBytes from 'chai-bytes';
-import { SimpleExample, SimpleExample__factory } from '../typechain-types';
+import { BasicExample, BasicExample__factory } from '../typechain-types';
 
 use(chaiBytes);
 
-describe('Use case: simple dummy example', () => {
-  let deployment: SimpleExample;
+describe('Use case: basic dummy example', () => {
+  let deployment: BasicExample;
 
   beforeEach(async () => {
     const [signer] = await hre.ethers.getSigners();
-    deployment = await new SimpleExample__factory(signer).deploy();
+    deployment = await new BasicExample__factory(signer).deploy();
   });
 
   it('Should serialize ExternalInstruction on-chain', async () => {

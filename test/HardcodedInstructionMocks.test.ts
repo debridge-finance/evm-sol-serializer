@@ -12,7 +12,7 @@ import {
 
 use(chaiBytes);
 
-describe('Use case: DlnClaimUnlockExample', () => {
+describe('External instructions with hardcoded values (sanity check)', () => {
   let deployment: HardcodedInstruction0Mock;
   let deployment1: HardcodedInstruction1Mock;
   let deployment2: HardcodedInstruction2Mock;
@@ -24,7 +24,7 @@ describe('Use case: DlnClaimUnlockExample', () => {
     deployment2 = await new HardcodedInstruction2Mock__factory(signer).deploy();
   });
 
-  it('Should serialize ExternalInstruction on-chain', async () => {
+  it('Should serialize ExternalInstruction (0) on-chain', async () => {
     const resultHex = await deployment.serializeNativeExternalInstruction0();
 
     const masterHex =
@@ -42,7 +42,7 @@ describe('Use case: DlnClaimUnlockExample', () => {
     expect(ethers.utils.arrayify(resultHex)).equalBytes(ethers.utils.arrayify(masterHex));
   });
 
-  it('Should serialize ExternalInstruction (1) on-chain', async () => {
+  it('Should serialize ExternalInstruction (2) on-chain', async () => {
     const resultHex = await deployment2.serializeNativeExternalInstruction2();
 
     const masterHex =

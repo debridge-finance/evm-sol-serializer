@@ -13,14 +13,13 @@ library DlnBuilder {
         uint256 orderId,
         DlnOrderLib.Order memory order
     ) internal view returns (bytes memory data) {
-        data = DlnInitWalletIfNeededBuilder.getSerializedInitWalletIfNeededExternalInstruction(
-            initReward,
-            unlockBeneficiary,
-            toBytes32(order.giveTokenAddress, 0)
-        );
 
         data = abi.encodePacked(
-            data,
+            DlnInitWalletIfNeededBuilder.getSerializedInitWalletIfNeededExternalInstruction(
+                initReward,
+                unlockBeneficiary,
+                toBytes32(order.giveTokenAddress, 0)
+            ),
             DlnClaimOrderUnlockBuilder.getSerializedClaimOrderUnlockExternalInstruction(
                 claimUnlockReward,
                 unlockBeneficiary,
