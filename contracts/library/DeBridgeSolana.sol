@@ -1,9 +1,7 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 library DeBridgeSolana {
-    using DeBridgeSolanaSerializer for ExternalInstruction;
-
     struct ExternalInstruction {
         uint64 reward;
         uint64 expense;
@@ -19,25 +17,36 @@ library DeBridgeSolana {
 
     struct PubkeySubstitutionTuple {
         uint64 u64;
+
+        /// @dev one of the following structs serialized through the `DeBridgeSolanaPubkeySubstitutions.serialize()` method:
+        ///    * `DeBridgeSolanaPubkeySubstitutions.SubmissionAuthWallet`
+        ///    * `DeBridgeSolanaPubkeySubstitutions.BySeeds`
         bytes data;
     }
 
     struct DataSubstitution {
+        /// @dev one of the following structs serialized through the `DeBridgeSolanaDataSubstitutions.serialize()` method:
+        ///    * `DeBridgeSolanaDataSubstitutions.SubmissionAuthWalletAmount`
         bytes data;
     }
+
     struct AccountMeta {
         bytes32 pubkey;
         bool is_writable;
         bool is_signer;
     }
+
     struct Instruction {
         bytes32 program_id;
         AccountMeta[] accounts;
+        /// @dev arbitrary value
         bytes data;
     }
 }
+
 library DeBridgeSolanaDataSubstitutions {
     using LittleEndianSerializer for uint64;
+
     struct SubmissionAuthWalletAmount {
         uint64 account_index;
         uint64 offset;
@@ -73,6 +82,25 @@ library DeBridgeSolanaPubkeySubstitutions {
         bytes data;
     }
 
+    function getArbitrarySeed(bytes memory vec) internal pure returns (DeBridgeSolanaPubkeySubstitutions.Seed memory) {
+        // require(vec.length <= (2**64 - 1), "U64");
+
+        bytes memory data = abi.encodePacked(
+            hex"00000000",
+            uint64(vec.length).uint64ToLittleEndian(),
+            vec
+        );
+        return DeBridgeSolanaPubkeySubstitutions.Seed({
+            data: data
+        });
+    }
+
+    function getSubmissionAuthSeed() internal pure returns (DeBridgeSolanaPubkeySubstitutions.Seed memory) {
+        return DeBridgeSolanaPubkeySubstitutions.Seed({
+            data: hex"01000000"
+        });
+    }
+
     function serialize(SubmissionAuthWallet memory submissionAuthWallet) internal pure returns (bytes memory data) {
         data = abi.encodePacked(
             hex"00000000",
@@ -95,25 +123,6 @@ library DeBridgeSolanaPubkeySubstitutions {
         for (uint i = 0; i < seeds.length; i++) {
             data = abi.encodePacked(data, seeds[i].data);
         }
-    }
-
-    function getArbitrarySeed(bytes memory vec) internal pure returns (DeBridgeSolanaPubkeySubstitutions.Seed memory) {
-        // require(vec.length <= (2**64 - 1), "U64");
-
-        bytes memory data = abi.encodePacked(
-            hex"00000000",
-            uint64(vec.length).uint64ToLittleEndian(),
-            vec
-        );
-        return DeBridgeSolanaPubkeySubstitutions.Seed({
-            data: data
-        });
-    }
-
-    function getSubmissionAuthSeed() internal pure returns (DeBridgeSolanaPubkeySubstitutions.Seed memory) {
-        return DeBridgeSolanaPubkeySubstitutions.Seed({
-            data: hex"01000000"
-        });
     }
 }
 
@@ -224,9 +233,7 @@ library DeBridgeSolanaSerializer {
     }
 }
 
-
 library LittleEndianSerializer {
-
     function uint64ToLittleEndian(uint64 v) internal pure returns (uint64) {
         return _uint64ToLittleEndian(v);
     }
