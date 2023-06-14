@@ -48,7 +48,7 @@ library DeBridgeSolanaDataSubstitutions {
 
     function serialize(SubmissionAuthWalletAmount memory submissionAuthWalletAmount) internal pure returns (bytes memory data) {
         data = bytes.concat(
-            bytes1(0), bytes1(0), bytes1(0), bytes1(0),
+            hex"00000000",
             submissionAuthWalletAmount.account_index.uint64ToLittleEndian(),
             submissionAuthWalletAmount.offset.uint64ToLittleEndian(),
             submissionAuthWalletAmount.is_big_endian == true ? bytes1(uint8(1)) : bytes1(0),
@@ -76,13 +76,13 @@ library DeBridgeSolanaPubkeySubstitutions {
 
     function serialize(SubmissionAuthWallet memory submissionAuthWallet) internal pure returns (bytes memory data) {
         data = bytes.concat(
-            bytes1(0), bytes1(0), bytes1(0), bytes1(0),
+            hex"00000000",
             submissionAuthWallet.token_mint);
     }
 
     function serialize(BySeeds memory bySeeds) internal pure returns (bytes memory data) {
         data = bytes.concat(
-            bytes1(uint8(1)), bytes1(0), bytes1(0), bytes1(0),
+            hex"01000000",
             bySeeds.program_id,
             serialize(bySeeds.seeds)
         );
@@ -105,18 +105,21 @@ library DeBridgeSolanaPubkeySubstitutions {
     }
 
     function getArbitrarySeed(bytes memory vec) internal pure returns (DeBridgeSolanaPubkeySubstitutions.Seed memory) {
-        bytes memory data = bytes.concat(bytes1(0), bytes1(0), bytes1(0), bytes1(0));
-        data = bytes.concat(data, uint64(vec.length).uint64ToLittleEndian(), vec);
+        // require(vec.length <= (2**64 - 1), "U64");
+
+        bytes memory data = bytes.concat(
+            hex"00000000",
+            uint64(vec.length).uint64ToLittleEndian(),
+            vec
+        );
         return DeBridgeSolanaPubkeySubstitutions.Seed({
             data: data
         });
     }
 
     function getSubmissionAuthSeed() internal pure returns (DeBridgeSolanaPubkeySubstitutions.Seed memory) {
-        bytes memory data = bytes.concat(bytes1(uint8(1)), bytes1(0), bytes1(0), bytes1(0));
-
         return DeBridgeSolanaPubkeySubstitutions.Seed({
-            data: data
+            data: hex"01000000"
         });
     }
 }
@@ -135,10 +138,10 @@ library DeBridgeSolanaSerializer {
         // expense: Option<Amount>
         //
         if (ei.expense == 0) {
-            data = bytes.concat(data, bytes1(0));
+            data = bytes.concat(data, hex"00");
         }
         else {
-            data = bytes.concat(data, bytes1(uint8(1)), ei.expense.uint64ToLittleEndian());
+            data = bytes.concat(data, hex"01", ei.expense.uint64ToLittleEndian());
         }
 
         //
@@ -166,20 +169,19 @@ library DeBridgeSolanaSerializer {
     function serialize(bytes memory vec) internal pure returns (bytes memory data) {
         require(vec.length <= (2**64 - 1), "U64");
 
-        data = bytes.concat(data, uint64(vec.length).uint64ToLittleEndian(), vec);
+        data = bytes.concat(uint64(vec.length).uint64ToLittleEndian(), vec);
     }
 
     function serialize(DeBridgeSolana.PubkeySubstitutionTuple[] memory pss) internal pure returns (bytes memory data) {
         if (pss.length == 0) {
-            data = bytes.concat(data, bytes1(0));
+            data = hex"00";
         }
         else {
             // TODO: supply positive test case
             require(pss.length <= (2**64 - 1), "U64");
 
             data = bytes.concat(
-                data,
-                bytes1(uint8(1)),
+                hex"01",
                 uint64(pss.length).uint64ToLittleEndian()
             );
 
@@ -191,15 +193,14 @@ library DeBridgeSolanaSerializer {
 
     function serialize(DeBridgeSolana.DataSubstitution[] memory dss) internal pure returns (bytes memory data) {
         if (dss.length == 0) {
-            data = bytes.concat(data, bytes1(0));
+            data = hex"00";
         }
         else {
             // TODO: supply positive test case
             require(dss.length <= (2**64 - 1), "U64");
 
             data = bytes.concat(
-                data,
-                bytes1(uint8(1)),
+                hex"01",
                 uint64(dss.length).uint64ToLittleEndian()
             );
 
@@ -211,7 +212,6 @@ library DeBridgeSolanaSerializer {
 
     function serialize(DeBridgeSolana.Instruction memory i) internal pure returns (bytes memory data) {
         data = bytes.concat(
-            data,
             i.program_id,
             serialize(i.accounts),
             serialize(i.data)
@@ -221,8 +221,8 @@ library DeBridgeSolanaSerializer {
     function serialize(DeBridgeSolana.AccountMeta memory am) internal pure returns (bytes memory data) {
         data = bytes.concat(
             am.pubkey,
-            bytes1(uint8(am.is_signer ? 1 : 0)),
-            bytes1(uint8(am.is_writable ? 1 : 0))
+            am.is_signer ? bytes1(0x01) : bytes1(0x00),
+            am.is_writable ? bytes1(0x01) : bytes1(0x00)
         );
     }
 
