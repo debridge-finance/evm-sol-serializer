@@ -1,47 +1,64 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-import "../library/DeBridgeSolana.sol";
+import '../library/DeBridgeSolana.sol';
 
 contract DeBridgeSolanaLibraryInvoker {
-    using DeBridgeSolanaSerializer for DeBridgeSolana.ExternalInstruction;
+  using DeBridgeSolanaSerializer for DeBridgeSolana.ExternalInstruction;
 
-    function serializeArbitrarySeed(bytes memory vec) public pure returns (bytes memory) {
-        return DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(vec);
-    }
-    function serializeSubmissionAuthSeed() public pure returns (bytes memory) {
-        return DeBridgeSolanaPubkeySubstitutions.getSubmissionAuthSeed();
-    }
+  function serializeArbitrarySeed(bytes memory vec) public pure returns (bytes memory) {
+    return DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(vec);
+  }
 
-    function serializeSubmissionAuthWallet(DeBridgeSolanaPubkeySubstitutions.SubmissionAuthWallet memory submissionAuthWallet) public pure returns (bytes memory data) {
-        return DeBridgeSolanaPubkeySubstitutions.serialize(submissionAuthWallet);
-    }
+  function serializeSubmissionAuthSeed() public pure returns (bytes memory) {
+    return DeBridgeSolanaPubkeySubstitutions.getSubmissionAuthSeed();
+  }
 
-    function serializeSubmissionAuthWalletAmount(DeBridgeSolanaDataSubstitutions.SubmissionAuthWalletAmount memory submissionAuthWalletAmount) public pure returns (bytes memory data) {
-        return DeBridgeSolanaDataSubstitutions.serialize(submissionAuthWalletAmount);
-    }
+  function serializeSubmissionAuthWallet(
+    DeBridgeSolanaPubkeySubstitutions.SubmissionAuthWallet memory submissionAuthWallet
+  ) public pure returns (bytes memory data) {
+    return DeBridgeSolanaPubkeySubstitutions.serialize(submissionAuthWallet);
+  }
 
-    function serializePubkeySubstitutionTuples(DeBridgeSolana.PubkeySubstitutionTuple[] memory pss) public pure returns (bytes memory data) {
-        return DeBridgeSolanaSerializer.serialize(pss);
-    }
+  function serializeSubmissionAuthWalletAmount(
+    DeBridgeSolanaDataSubstitutions.SubmissionAuthWalletAmount memory submissionAuthWalletAmount
+  ) public pure returns (bytes memory data) {
+    return DeBridgeSolanaDataSubstitutions.serialize(submissionAuthWalletAmount);
+  }
 
-    function serializeDataSubstitutions(DeBridgeSolana.DataSubstitution[] memory dss) public pure returns (bytes memory data) {
-        return DeBridgeSolanaSerializer.serialize(dss);
-    }
+  function serializePubkeySubstitutionTuples(
+    DeBridgeSolana.PubkeySubstitutionTuple[] memory pss
+  ) public pure returns (bytes memory data) {
+    return DeBridgeSolanaSerializer.serialize(pss);
+  }
 
-    function serializeBySeeds(DeBridgeSolanaPubkeySubstitutions.BySeeds memory bySeeds) public pure returns (bytes memory data) {
-        return DeBridgeSolanaPubkeySubstitutions.serialize(bySeeds);
-    }
+  function serializeDataSubstitutions(
+    DeBridgeSolana.DataSubstitution[] memory dss
+  ) public pure returns (bytes memory data) {
+    return DeBridgeSolanaSerializer.serialize(dss);
+  }
 
-    function serializeAccountsMeta(DeBridgeSolana.AccountMeta memory accountsMeta) public pure returns (bytes memory data) {
-        return DeBridgeSolanaSerializer.serialize(accountsMeta);
-    }
+  function serializeBySeeds(
+    DeBridgeSolanaPubkeySubstitutions.BySeeds memory bySeeds
+  ) public pure returns (bytes memory data) {
+    return DeBridgeSolanaPubkeySubstitutions.serialize(bySeeds);
+  }
 
-    function serializeInstruction(DeBridgeSolana.Instruction memory instruction) public pure returns (bytes memory data) {
-        return DeBridgeSolanaSerializer.serialize(instruction);
-    }
+  function serializeAccountsMeta(
+    DeBridgeSolana.AccountMeta memory accountsMeta
+  ) public pure returns (bytes memory data) {
+    return DeBridgeSolanaSerializer.serialize(accountsMeta);
+  }
 
-    function serializeExternalInstruction(DeBridgeSolana.ExternalInstruction memory externalInstruction) public pure returns (bytes memory) {
-        return externalInstruction.serialize();
-    }
+  function serializeInstruction(
+    DeBridgeSolana.Instruction memory instruction
+  ) public pure returns (bytes memory data) {
+    return DeBridgeSolanaSerializer.serialize(instruction);
+  }
+
+  function serializeExternalInstruction(
+    DeBridgeSolana.ExternalInstruction memory externalInstruction
+  ) public pure returns (bytes memory) {
+    return externalInstruction.serialize();
+  }
 }

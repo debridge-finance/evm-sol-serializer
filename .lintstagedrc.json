@@ -1,7 +1,10 @@
 {
     "**/*.ts": [
-      "prettier --write",
+      "npm run pretty:ts",
       "eslint --cache --fix"
+    ],
+    "**/*.sol": [
+      "npm run pretty:sol"
     ],
     "package.json": [
       "prettier-package-json --write"
