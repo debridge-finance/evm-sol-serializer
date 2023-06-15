@@ -49,11 +49,7 @@ describe('DeBridgeExternalInstructionTest', () => {
           1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
           26, 27, 28, 29, 30, 31, 32,
         ]),
-        seeds: [
-          {
-            data: await libraryInvoker.serializeArbitrarySeed([0, 1, 2]),
-          },
-        ],
+        seeds: [await libraryInvoker.serializeArbitrarySeed([0, 1, 2])],
         bump: 0,
       });
       const master = new Uint8Array([
@@ -188,12 +184,8 @@ describe('DeBridgeExternalInstructionTest', () => {
           data: await libraryInvoker.serializeBySeeds({
             program_id: Buffer.alloc(32, 1),
             seeds: [
-              {
-                data: await libraryInvoker.serializeArbitrarySeed(new Uint8Array([1, 2, 3])),
-              },
-              {
-                data: await libraryInvoker.serializeSubmissionAuthSeed(),
-              },
+              await libraryInvoker.serializeArbitrarySeed(new Uint8Array([1, 2, 3])),
+              await libraryInvoker.serializeSubmissionAuthSeed(),
             ],
             bump: 255,
           }),

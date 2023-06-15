@@ -85,7 +85,7 @@ library DlnClaimOrderUnlockBuilder {
     }
 
     function getPubkeySubstitutionTuple_0() private pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](1);
+        bytes[] memory seeds = new bytes[](1);
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(dln_src_State_SEED));
 
         return DeBridgeSolana.PubkeySubstitutionTuple({
@@ -99,7 +99,7 @@ library DlnClaimOrderUnlockBuilder {
     }
 
     function getPubkeySubstitutionTuple_1() private pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](1);
+        bytes[] memory seeds = new bytes[](1);
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(dln_src_FeeLedger_SEED));
 
         return DeBridgeSolana.PubkeySubstitutionTuple({
@@ -113,7 +113,7 @@ library DlnClaimOrderUnlockBuilder {
     }
 
     function getPubkeySubstitutionTuple_2(bytes32 orderGiveTokenAddress) private pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](2);
+        bytes[] memory seeds = new bytes[](2);
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(dln_src_FeeLedger_WALLET_SEED));
         seeds[1] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(orderGiveTokenAddress));
 
@@ -128,7 +128,7 @@ library DlnClaimOrderUnlockBuilder {
     }
 
     function getPubkeySubstitutionTuple_3(uint256 orderId) private pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](2);
+        bytes[] memory seeds = new bytes[](2);
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(dln_src_GiveOrderState_SEED));
         seeds[1] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(orderId));
 
@@ -143,7 +143,7 @@ library DlnClaimOrderUnlockBuilder {
     }
 
     function getPubkeySubstitutionTuple_4(bytes32 actionBeneficiary, bytes32 orderGiveTokenAddress) private pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](3);
+        bytes[] memory seeds = new bytes[](3);
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(actionBeneficiary));
         seeds[1] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(anchor_spl_token_ID));
         seeds[2] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(orderGiveTokenAddress));
@@ -159,7 +159,7 @@ library DlnClaimOrderUnlockBuilder {
     }
 
     function getPubkeySubstitutionTuple_5(uint256 orderId) private pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](2);
+        bytes[] memory seeds = new bytes[](2);
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(dln_src_GiveOrderState_WALLET_SEED));
         seeds[1] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(orderId));
 
@@ -174,7 +174,7 @@ library DlnClaimOrderUnlockBuilder {
     }
 
     function getPubkeySubstitutionTuple_6(uint256 orderTakeChainId) private pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](2);
+        bytes[] memory seeds = new bytes[](2);
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(dln_src_AuthorizedNativeSender_SEED));
         seeds[1] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(orderTakeChainId));
 

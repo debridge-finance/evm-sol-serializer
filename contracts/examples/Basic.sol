@@ -39,7 +39,7 @@ contract BasicExample {
     }
 
     function getPubkeySubstitutionTuple_1() internal pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](2);
+        bytes[] memory seeds = new bytes[](2);
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(uint8(1), uint8(2), uint8(3)));
         seeds[1] = DeBridgeSolanaPubkeySubstitutions.getSubmissionAuthSeed();
 

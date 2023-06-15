@@ -57,7 +57,7 @@ contract HardcodedInstruction1Mock {
     }
 
     function getPubkeySubstitutionTuple_0() internal pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](1);
+        bytes[] memory seeds = new bytes[](1);
         // [83,84,65,84,69]
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(
             bytes1(uint8(83)),
@@ -78,7 +78,7 @@ contract HardcodedInstruction1Mock {
     }
 
     function getPubkeySubstitutionTuple_1() internal pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](1);
+        bytes[] memory seeds = new bytes[](1);
         // [70,69,69,32,76,69,68,71,69,82]
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(
             bytes1(uint8(70)),
@@ -104,7 +104,7 @@ contract HardcodedInstruction1Mock {
     }
 
     function getPubkeySubstitutionTuple_2() internal pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](2);
+        bytes[] memory seeds = new bytes[](2);
 
         // [70,69,69,95,76,69,68,71,69,82,95,87,65,76,76,69,84]
         bytes memory m = abi.encodePacked(
@@ -150,7 +150,7 @@ contract HardcodedInstruction1Mock {
     }
 
     function getPubkeySubstitutionTuple_3() internal pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](2);
+        bytes[] memory seeds = new bytes[](2);
 
         // [71,73,86,69,95,79,82,68,69,82,95,83,84,65,84,69]
         bytes memory m = abi.encodePacked(
@@ -193,7 +193,7 @@ contract HardcodedInstruction1Mock {
     }
 
     function getPubkeySubstitutionTuple_4() internal pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](3);
+        bytes[] memory seeds = new bytes[](3);
 
         // [200; 32]
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(bytes32(0xc8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8)));
@@ -268,7 +268,7 @@ contract HardcodedInstruction1Mock {
     }
 
     function getPubkeySubstitutionTuple_5() internal pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](2);
+        bytes[] memory seeds = new bytes[](2);
 
         // [71,73,86,69,95,79,82,68,69,82,95,87,65,76,76,69,84,]
         bytes memory m = abi.encodePacked(
@@ -313,7 +313,7 @@ contract HardcodedInstruction1Mock {
     }
 
     function getPubkeySubstitutionTuple_6() internal pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](2);
+        bytes[] memory seeds = new bytes[](2);
 
         // [65,85,84,72,79,82,73,90,69,68,95,78,65,84,73,86,69,95,83,69,78,68,69,82]
         bytes memory m = abi.encodePacked(

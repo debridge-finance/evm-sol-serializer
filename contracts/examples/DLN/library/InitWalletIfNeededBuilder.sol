@@ -38,7 +38,7 @@ library DlnInitWalletIfNeededBuilder {
     }
 
     function getPubkeySubstitutionTuple_0(bytes32 actionBeneficiary, bytes32 orderGiveTokenAddress) private pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](3);
+        bytes[] memory seeds = new bytes[](3);
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(actionBeneficiary));
         seeds[1] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA));
         seeds[2] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(orderGiveTokenAddress));

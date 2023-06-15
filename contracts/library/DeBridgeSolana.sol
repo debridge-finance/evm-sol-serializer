@@ -74,31 +74,25 @@ library DeBridgeSolanaPubkeySubstitutions {
 
     struct BySeeds {
         bytes32 program_id;
-        Seed[] seeds;
+        /// @dev Use the following shortcuts to retrieve properly encoded seed types:
+        ///    * `DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed()`
+        ///    * `DeBridgeSolanaPubkeySubstitutions.getSubmissionAuthSeed()`
+        bytes[] seeds;
         uint8 bump;
     }
 
-    struct Seed {
-        bytes data;
-    }
-
-    function getArbitrarySeed(bytes memory vec) internal pure returns (DeBridgeSolanaPubkeySubstitutions.Seed memory) {
+    function getArbitrarySeed(bytes memory vec) internal pure returns (bytes memory) {
         // require(vec.length <= (2**64 - 1), "U64");
 
-        bytes memory data = abi.encodePacked(
+        return abi.encodePacked(
             hex"00000000",
             uint64(vec.length).uint64ToLittleEndian(),
             vec
         );
-        return DeBridgeSolanaPubkeySubstitutions.Seed({
-            data: data
-        });
     }
 
-    function getSubmissionAuthSeed() internal pure returns (DeBridgeSolanaPubkeySubstitutions.Seed memory) {
-        return DeBridgeSolanaPubkeySubstitutions.Seed({
-            data: hex"01000000"
-        });
+    function getSubmissionAuthSeed() internal pure returns (bytes memory) {
+        return hex"01000000";
     }
 
     function serialize(SubmissionAuthWallet memory submissionAuthWallet) internal pure returns (bytes memory data) {
@@ -116,12 +110,12 @@ library DeBridgeSolanaPubkeySubstitutions {
         );
     }
 
-    function serialize(Seed[] memory seeds) internal pure returns (bytes memory data) {
+    function serialize(bytes[] memory seeds) internal pure returns (bytes memory data) {
         // require(seeds.length <= (2**64 - 1), "U64");
 
         data = abi.encodePacked(uint64(seeds.length).uint64ToLittleEndian());
         for (uint i = 0; i < seeds.length; i++) {
-            data = abi.encodePacked(data, seeds[i].data);
+            data = abi.encodePacked(data, seeds[i]);
         }
     }
 }

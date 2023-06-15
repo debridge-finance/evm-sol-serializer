@@ -7,10 +7,10 @@ contract DeBridgeSolanaLibraryInvoker {
     using DeBridgeSolanaSerializer for DeBridgeSolana.ExternalInstruction;
 
     function serializeArbitrarySeed(bytes memory vec) public pure returns (bytes memory) {
-        return DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(vec).data;
+        return DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(vec);
     }
     function serializeSubmissionAuthSeed() public pure returns (bytes memory) {
-        return DeBridgeSolanaPubkeySubstitutions.getSubmissionAuthSeed().data;
+        return DeBridgeSolanaPubkeySubstitutions.getSubmissionAuthSeed();
     }
 
     function serializeSubmissionAuthWallet(DeBridgeSolanaPubkeySubstitutions.SubmissionAuthWallet memory submissionAuthWallet) public pure returns (bytes memory data) {

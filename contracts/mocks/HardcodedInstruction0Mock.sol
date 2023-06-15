@@ -33,7 +33,7 @@ contract HardcodedInstruction0Mock {
     }
 
     function getPubkeySubstitutionTuple_0() internal pure returns (DeBridgeSolana.PubkeySubstitutionTuple memory) {
-        DeBridgeSolanaPubkeySubstitutions.Seed[] memory seeds = new DeBridgeSolanaPubkeySubstitutions.Seed[](3);
+        bytes[] memory seeds = new bytes[](3);
         seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(bytes32(0xc8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8)));
         seeds[1] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(bytes32(0x06ddf6e1d765a193d9cbe146ceeb79ac1cb485ed5f5b37913a8cf5857eff00a9)));
         seeds[2] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(abi.encodePacked(bytes32(0x6464646464646464646464646464646464646464646464646464646464646464)));
