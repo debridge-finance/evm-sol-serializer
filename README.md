@@ -56,3 +56,7 @@ Finally, inspect the [`DlnBuilder` library](./contracts/examples/DLN/library/Bui
 ## Caveat
 
 This library takes responsibility for the correct packaging of the data struct for transmission. It is a developers' responsibility to prepare values to be included in the data struct, and ensure these values are correct.
+
+## License
+
+All smart contracts are released under LGPL-3.0 by deBridge.

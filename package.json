@@ -1,8 +1,10 @@
 {
-  "name": "debridge-evm-to-solana-instruction-serializer",
+  "name": "evm-sol-serializer",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A purposed library on Solidity for declaring and serializing deBridge's ExternalInstruction data struct, giving the ability to construct valid authentic calls to arbitrary Solana smart contracts on supported EVM chains (Ethereum, etc), so they can be further bridged to Solana through the deBridge generic messaging and cross-chain interoperability protocol.",
+  "license": "LGPL-3.0-only",
+  "author": "deBridge",
+  "repository": "github:debridge-finance/evm-sol-serializer",
   "scripts": {
     "check": "npm-run-all compile format test",
     "compile": "hardhat clean && hardhat compile --force",

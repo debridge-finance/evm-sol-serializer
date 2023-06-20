@@ -1,6 +1,7 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: LGPL-3.0-only
 pragma solidity ^0.8.0;
 
+/// @author deBridge
 library DeBridgeSolana {
   struct ExternalInstruction {
     uint64 reward;
