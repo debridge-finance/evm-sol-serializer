@@ -35,15 +35,7 @@ contract HardcodedInstruction1Mock {
     // [89,81,180,79,142,144,66,251,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255]
     return
       abi.encodePacked(
-        bytes1(uint8(89)),
-        bytes1(uint8(81)),
-        bytes1(uint8(180)),
-        bytes1(uint8(79)),
-        bytes1(uint8(142)),
-        bytes1(uint8(144)),
-        bytes1(uint8(66)),
-        bytes1(uint8(251)),
-        bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff)
+        hex'5951b44f8e9042fbffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
       );
   }
 
@@ -70,13 +62,7 @@ contract HardcodedInstruction1Mock {
     bytes[] memory seeds = new bytes[](1);
     // [83,84,65,84,69]
     seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(
-      abi.encodePacked(
-        bytes1(uint8(83)),
-        bytes1(uint8(84)),
-        bytes1(uint8(65)),
-        bytes1(uint8(84)),
-        bytes1(uint8(69))
-      )
+      abi.encodePacked(hex'5354415445')
     );
 
     return
@@ -100,18 +86,7 @@ contract HardcodedInstruction1Mock {
     bytes[] memory seeds = new bytes[](1);
     // [70,69,69,32,76,69,68,71,69,82]
     seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(
-      abi.encodePacked(
-        bytes1(uint8(70)),
-        bytes1(uint8(69)),
-        bytes1(uint8(69)),
-        bytes1(uint8(32)),
-        bytes1(uint8(76)),
-        bytes1(uint8(69)),
-        bytes1(uint8(68)),
-        bytes1(uint8(71)),
-        bytes1(uint8(69)),
-        bytes1(uint8(82))
-      )
+      abi.encodePacked(hex'464545204c4544474552')
     );
 
     return
@@ -135,33 +110,8 @@ contract HardcodedInstruction1Mock {
     bytes[] memory seeds = new bytes[](2);
 
     // [70,69,69,95,76,69,68,71,69,82,95,87,65,76,76,69,84]
-    bytes memory m = abi.encodePacked(
-      bytes1(uint8(70)),
-      bytes1(uint8(69)),
-      bytes1(uint8(69)),
-      bytes1(uint8(95))
-    );
+    bytes memory m = abi.encodePacked(hex'4645455f4c45444745525f57414c4c4554');
 
-    m = abi.encodePacked(
-      m,
-      bytes1(uint8(76)),
-      bytes1(uint8(69)),
-      bytes1(uint8(68)),
-      bytes1(uint8(71))
-    );
-
-    m = abi.encodePacked(
-      m,
-      bytes1(uint8(69)),
-      bytes1(uint8(82)),
-      bytes1(uint8(95)),
-      bytes1(uint8(87)),
-      bytes1(uint8(65)),
-      bytes1(uint8(76)),
-      bytes1(uint8(76)),
-      bytes1(uint8(69)),
-      bytes1(uint8(84))
-    );
     seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(m);
 
     // [100; 32]
@@ -190,33 +140,8 @@ contract HardcodedInstruction1Mock {
     bytes[] memory seeds = new bytes[](2);
 
     // [71,73,86,69,95,79,82,68,69,82,95,83,84,65,84,69]
-    bytes memory m = abi.encodePacked(
-      bytes1(uint8(71)),
-      bytes1(uint8(73)),
-      bytes1(uint8(86)),
-      bytes1(uint8(69))
-    );
-
-    m = abi.encodePacked(
-      m,
-      bytes1(uint8(95)),
-      bytes1(uint8(79)),
-      bytes1(uint8(82)),
-      bytes1(uint8(68))
-    );
-
     seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(
-      abi.encodePacked(
-        m,
-        bytes1(uint8(69)),
-        bytes1(uint8(82)),
-        bytes1(uint8(95)),
-        bytes1(uint8(83)),
-        bytes1(uint8(84)),
-        bytes1(uint8(65)),
-        bytes1(uint8(84)),
-        bytes1(uint8(69))
-      )
+      abi.encodePacked(hex'474956455f4f524445525f5354415445')
     );
 
     // [255; 32]
@@ -250,61 +175,8 @@ contract HardcodedInstruction1Mock {
     );
 
     // [6,221,246,225,215,101,161,147,217,203,225,70,206,235,121,172,28,180,133,237,95,91,55,145,58,140,245,133,126,255,0,169]
-    bytes memory m = abi.encodePacked(
-      bytes1(uint8(6)),
-      bytes1(uint8(221)),
-      bytes1(uint8(246)),
-      bytes1(uint8(225))
-    );
-
-    m = abi.encodePacked(
-      m,
-      bytes1(uint8(215)),
-      bytes1(uint8(101)),
-      bytes1(uint8(161)),
-      bytes1(uint8(147))
-    );
-
-    m = abi.encodePacked(
-      m,
-      bytes1(uint8(217)),
-      bytes1(uint8(203)),
-      bytes1(uint8(225)),
-      bytes1(uint8(70))
-    );
-
-    m = abi.encodePacked(
-      m,
-      bytes1(uint8(206)),
-      bytes1(uint8(235)),
-      bytes1(uint8(121)),
-      bytes1(uint8(172))
-    );
-
-    m = abi.encodePacked(
-      m,
-      bytes1(uint8(28)),
-      bytes1(uint8(180)),
-      bytes1(uint8(133)),
-      bytes1(uint8(237))
-    );
-
     seeds[1] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(
-      abi.encodePacked(
-        m,
-        bytes1(uint8(95)),
-        bytes1(uint8(91)),
-        bytes1(uint8(55)),
-        bytes1(uint8(145)),
-        bytes1(uint8(58)),
-        bytes1(uint8(140)),
-        bytes1(uint8(245)),
-        bytes1(uint8(133)),
-        bytes1(uint8(126)),
-        bytes1(uint8(255)),
-        bytes1(uint8(0)),
-        bytes1(uint8(169))
-      )
+      abi.encodePacked(hex'06ddf6e1d765a193d9cbe146ceeb79ac1cb485ed5f5b37913a8cf5857eff00a9')
     );
 
     // [100; 32]
@@ -333,34 +205,8 @@ contract HardcodedInstruction1Mock {
     bytes[] memory seeds = new bytes[](2);
 
     // [71,73,86,69,95,79,82,68,69,82,95,87,65,76,76,69,84,]
-    bytes memory m = abi.encodePacked(
-      bytes1(uint8(71)),
-      bytes1(uint8(73)),
-      bytes1(uint8(86)),
-      bytes1(uint8(69))
-    );
-
-    m = abi.encodePacked(
-      m,
-      bytes1(uint8(95)),
-      bytes1(uint8(79)),
-      bytes1(uint8(82)),
-      bytes1(uint8(68))
-    );
-
     seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(
-      abi.encodePacked(
-        m,
-        bytes1(uint8(69)),
-        bytes1(uint8(82)),
-        bytes1(uint8(95)),
-        bytes1(uint8(87)),
-        bytes1(uint8(65)),
-        bytes1(uint8(76)),
-        bytes1(uint8(76)),
-        bytes1(uint8(69)),
-        bytes1(uint8(84))
-      )
+      abi.encodePacked(hex'474956455f4f524445525f57414c4c4554')
     );
 
     // [255; 32]
@@ -389,49 +235,8 @@ contract HardcodedInstruction1Mock {
     bytes[] memory seeds = new bytes[](2);
 
     // [65,85,84,72,79,82,73,90,69,68,95,78,65,84,73,86,69,95,83,69,78,68,69,82]
-    bytes memory m = abi.encodePacked(
-      bytes1(uint8(65)),
-      bytes1(uint8(85)),
-      bytes1(uint8(84)),
-      bytes1(uint8(72))
-    );
-
-    m = abi.encodePacked(
-      m,
-      bytes1(uint8(79)),
-      bytes1(uint8(82)),
-      bytes1(uint8(73)),
-      bytes1(uint8(90))
-    );
-
-    m = abi.encodePacked(
-      m,
-      bytes1(uint8(69)),
-      bytes1(uint8(68)),
-      bytes1(uint8(95)),
-      bytes1(uint8(78))
-    );
-
-    m = abi.encodePacked(
-      m,
-      bytes1(uint8(65)),
-      bytes1(uint8(84)),
-      bytes1(uint8(73)),
-      bytes1(uint8(86))
-    );
-
     seeds[0] = DeBridgeSolanaPubkeySubstitutions.getArbitrarySeed(
-      abi.encodePacked(
-        m,
-        bytes1(uint8(69)),
-        bytes1(uint8(95)),
-        bytes1(uint8(83)),
-        bytes1(uint8(69)),
-        bytes1(uint8(78)),
-        bytes1(uint8(68)),
-        bytes1(uint8(69)),
-        bytes1(uint8(82))
-      )
+      abi.encodePacked(hex'415554484f52495a45445f4e41544956455f53454e444552')
     );
 
     // [10; 32]
