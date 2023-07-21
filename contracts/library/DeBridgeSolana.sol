@@ -113,7 +113,7 @@ library DeBridgeSolanaPubkeySubstitutions {
     // require(seeds.length <= (2**64 - 1), "U64");
 
     data = abi.encodePacked(uint64(seeds.length).uint64ToLittleEndian());
-    for (uint i = 0; i < seeds.length; i++) {
+    for (uint i = 0; i < seeds.length; ++i) {
       data = abi.encodePacked(data, seeds[i]);
     }
   }
@@ -163,7 +163,7 @@ library DeBridgeSolanaSerializer {
 
       // beware! This loop starts at (1) rather than (0) because the first (zeroed) element
       // is being inlined onto previous abi.encodePacked() call. This saves 500 gas
-      for (uint i = 1; i < pss.length; i++) {
+      for (uint i = 1; i < pss.length; ++i) {
         data = abi.encodePacked(data, pss[i].u64.uint64ToLittleEndian(), pss[i].data);
       }
     }
@@ -179,7 +179,7 @@ library DeBridgeSolanaSerializer {
 
       data = abi.encodePacked(hex'01', uint64(dss.length).uint64ToLittleEndian());
 
-      for (uint i = 0; i < dss.length; i++) {
+      for (uint i = 0; i < dss.length; ++i) {
         data = abi.encodePacked(data, dss[i].data);
       }
     }
@@ -215,7 +215,7 @@ library DeBridgeSolanaSerializer {
     // data = abi.encodePacked(uint64(ams.length).uint64ToLittleEndian());
     // }}}
 
-    for (uint i = 0; i < ams.length; i++) {
+    for (uint i = 0; i < ams.length; ++i) {
       data = abi.encodePacked(
         data,
         // inline call of `serialize(DeBridgeSolana.AccountMeta memory)` for optimization
